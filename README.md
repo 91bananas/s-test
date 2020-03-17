@@ -1,5 +1,3 @@
-# sure-test
-
 ## Project setup
 ```
 npm install
