@@ -6,6 +6,7 @@
                     id="input-1"
                     v-model="variable_selections.deductible"
                     required
+                    @change="handleChange($event, 'deductible')"
                 >
                     <b-form-select-option :value="null" disabled>Please select a Deductible</b-form-select-option>
                     <b-form-select-option v-for="value in variable_options.deductible.values" :value="value" v-bind:key="value">{{value | formatDollar}}</b-form-select-option>
@@ -17,6 +18,7 @@
                     id="input-2"
                     v-model="variable_selections.asteroid_collision"
                     required
+                    @change="handleChange($event, 'asteroid_collision')"
                 >
                     <b-form-select-option :value="null" disabled>Please select an Asteroid Collision Coverage</b-form-select-option>
                     <b-form-select-option v-for="value in variable_options.asteroid_collision.values" :value="value" v-bind:key="value">{{value | formatDollar}}</b-form-select-option>
@@ -35,10 +37,17 @@ export default {
         variable_selections: Object,
         premium: Number
     },
-    computed: {
-        deductible_values() {
-            debugger; //eslint-disable-line
-            return [];
+    data() {
+        return {
+            asteroid_collision: this.variable_selections.asteroid_collision,
+            deductible: this.variable_selections.deductible,
+        };
+    },
+    methods: {
+        handleChange(changedValue, valueType) {
+            this.$store.dispatch('updatedQuote', {
+                [valueType]: changedValue
+            });
         }
     }
 }

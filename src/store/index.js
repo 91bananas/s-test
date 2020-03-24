@@ -22,6 +22,24 @@ export default new Vuex.Store({
                 }, (error) => {
                     console.log(error);
                 });
+        },
+        updatedQuote: function ({ commit, getters }, form) {
+            //form => {deductible:1233 }
+            const payload = {
+                "quote": {
+                    "quoteId": getters.quote.quoteId,
+                    "rating_address": getters.quote.rating_address,
+                    "policy_holder": getters.quote.policy_holder,
+                    "variable_selections": { ...getters.quote.variable_selections, ...form}
+                }
+            }
+            axios.put(`https://fed-challenge-api.sure.now.sh/api/v1/quotes/${getters.quote.quoteId}`, payload)
+                .then((response) => {
+                    console.log('from api', response);
+                    commit('SET_QUOTE', response.data.quote);
+                }, (error) => {
+                    console.log(error);
+                });
         }
     },
     getters: {
